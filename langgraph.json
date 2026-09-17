@@ -1,0 +1,7 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "cfo": "./graph.py:graph"
+  },
+  "env": ".env"
+}

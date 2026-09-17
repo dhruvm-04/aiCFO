@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>aiCFO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+  <style>
+    :root { --paper:#EDEAE3; --ink:#0A0A0A; --red:#FF2D00; --gray:#8A8780; --line:rgba(10,10,10,.12); --line-strong:rgba(10,10,10,.5); --nav-h:3.4rem; color-scheme:light; }
+    :root[data-theme="dark"] { --paper:#0F0F0E; --ink:#EDEAE3; --red:#FF3D1A; --gray:#8F8C86; --line:rgba(237,234,227,.14); --line-strong:rgba(237,234,227,.5); color-scheme:dark; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { min-height:100vh; overflow-x:hidden; background:var(--paper); color:var(--ink); font-family:Inter,sans-serif; line-height:1.5; -webkit-font-smoothing:antialiased; transition:background .2s,color .2s; }
+    a { color:inherit; text-decoration:none; }
+    ::selection { background:var(--red); color:var(--paper); }
+    .red { color:var(--red); }
+    .nav { position:sticky; top:0; z-index:100; height:var(--nav-h); padding:0 1.5rem; display:flex; justify-content:space-between; align-items:center; background:color-mix(in srgb,var(--paper) 90%,transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--ink); }
+    .nav-logo { font-weight:800; font-size:.85rem; letter-spacing:-.02em; }
+    .nav-links { display:flex; list-style:none; }
+    .nav-link { display:flex; align-items:center; padding:.5rem .85rem; border-left:1px solid var(--line); color:var(--gray); font:10px 'JetBrains Mono',monospace; letter-spacing:.1em; text-transform:uppercase; }
+    .nav-link:hover { color:var(--paper); background:var(--ink); }
+    .theme-toggle { width:2.35rem; height:2.35rem; justify-content:center; padding:0; border:1px solid var(--ink); background:var(--paper); color:var(--ink); cursor:pointer; font:16px 'JetBrains Mono',monospace; }
+    .theme-toggle:hover { color:var(--paper); background:var(--ink); }
+    .hero-screen { min-height:calc(100vh - var(--nav-h)); padding:3.5rem 4rem 2.5rem; display:flex; align-items:stretch; }
+    .hero-grid { width:100%; max-width:1500px; margin:0 auto; display:flex; flex-direction:column; gap:1.5rem; }
+    .hero-top { display:flex; justify-content:space-between; align-items:flex-start; gap:2rem; flex-wrap:wrap; }
+    .section-label { display:flex; align-items:center; gap:.75rem; margin-bottom:2rem; font:10px 'JetBrains Mono',monospace; letter-spacing:.15em; text-transform:uppercase; }
+    .section-label.small { margin-bottom:1.1rem; font-size:10px; gap:.6rem; }
+    .section-label .num { color:var(--red); font-weight:700; }
+    .section-label .sep { color:var(--gray); }
+    .section-label .line { flex:1; height:1px; background:var(--ink); }
+    .section-label .meta { color:var(--gray); }
+    .hero-name { max-width:18ch; margin-bottom:1rem; font-size:clamp(2.5rem,6vw,5.5rem); font-weight:900; line-height:.88; letter-spacing:-.06em; }
+    .hero-tagline { max-width:70ch; margin-bottom:0; color:var(--ink); opacity:.85; font:clamp(.75rem,1.2vw,.95rem) 'JetBrains Mono',monospace; }
+    .info-strip { display:grid; grid-template-columns:repeat(4,1fr); align-self:flex-end; min-width:min(100%,620px); border-top:1px solid var(--ink); border-left:1px solid var(--ink); }
+    .info-cell { padding:1rem 1.15rem; border-right:1px solid var(--ink); border-bottom:1px solid var(--ink); background:var(--paper); transition:background .15s,color .15s; }
+    .info-cell:hover { color:var(--paper); background:var(--ink); }
+    .info-key,.b-label { margin-bottom:.3rem; color:var(--gray); font:9px 'JetBrains Mono',monospace; letter-spacing:.15em; text-transform:uppercase; }
+    .info-val { font-size:.84rem; font-weight:700; }
+    .api-status { display:inline-block; width:6px; height:6px; margin-right:.35rem; border-radius:50%; background:var(--gray); }
+    .api-status.live { background:var(--red); }
+    .fn-bento { display:grid; grid-template-columns:repeat(3,1fr); flex:1; min-height:0; border-top:1px solid var(--ink); border-left:1px solid var(--ink); }
+    .fn-panel { display:flex; flex-direction:column; min-height:390px; overflow:hidden; padding:1.5rem 1.75rem; border-right:1px solid var(--ink); border-bottom:1px solid var(--ink); background:var(--paper); }
+    .fn-panel:hover { background:color-mix(in srgb,var(--ink) 3%,var(--paper)); }
+    textarea { flex:1; width:100%; min-height:180px; resize:vertical; border:1px solid var(--ink); outline:none; padding:1rem; background:var(--paper); color:var(--ink); font:13px/1.6 'JetBrains Mono',monospace; }
+    textarea:focus { border-color:var(--red); }
+    .actions-row { display:flex; gap:.6rem; margin-top:1rem; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; min-height:2.45rem; padding:.7rem 1.2rem; border:1px solid var(--ink); background:var(--paper); color:var(--ink); cursor:pointer; font:10px 'JetBrains Mono',monospace; letter-spacing:.1em; text-transform:uppercase; }
+    .btn:hover { color:var(--paper); background:var(--ink); }
+    .btn-primary { flex:1; border-color:var(--red); background:var(--red); color:var(--paper); }
+    .btn-primary:hover { background:var(--ink); color:var(--red); }
+    .btn:disabled { cursor:wait; opacity:.5; }
+    .empty-state,.loading-state { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.6rem; color:var(--gray); text-align:center; font:10px 'JetBrains Mono',monospace; letter-spacing:.06em; text-transform:uppercase; }
+    .loading-state { display:none; }
+    .loading-state.active { display:flex; }
+    .loading-state.active + .empty-state { display:none; }
+    .spinner { width:22px; height:22px; border:2px solid var(--line); border-top-color:var(--red); border-radius:50%; animation:spin .7s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .result-body { display:none; flex:1; min-height:0; overflow-y:auto; padding-right:.25rem; }
+    .result-body.active { display:block; }
+    .result-body::-webkit-scrollbar { width:5px; }
+    .result-body::-webkit-scrollbar-thumb { background:var(--line-strong); }
+    .summary { margin-bottom:1rem; font-size:.95rem; line-height:1.55; }
+    .result-field { margin-top:1rem; }
+    .result-field ul { list-style:none; }
+    .result-field li { position:relative; padding-left:1rem; margin:.4rem 0; color:var(--gray); font-size:.77rem; }
+    .result-field li::before { position:absolute; left:0; color:var(--red); content:'->'; }
+    .result-empty { color:var(--gray); font:10px 'JetBrains Mono',monospace; text-transform:uppercase; }
+    .log-list { flex:1; min-height:0; overflow-y:auto; list-style:none; }
+    .log-empty { display:flex; align-items:center; justify-content:center; height:100%; min-height:120px; color:var(--gray); text-align:center; font:10px 'JetBrains Mono',monospace; text-transform:uppercase; }
+    .log-item { padding:.75rem 0; border-bottom:1px solid var(--line); }
+    .log-top { display:flex; justify-content:space-between; gap:.5rem; margin-bottom:.25rem; color:var(--red); font:9px 'JetBrains Mono',monospace; text-transform:uppercase; }
+    .log-text { overflow:hidden; color:var(--gray); font-size:.78rem; text-overflow:ellipsis; white-space:nowrap; }
+    .panel-note { margin-top:1rem; border-top:1px solid var(--line); padding-top:.75rem; color:var(--gray); font:10px 'JetBrains Mono',monospace; }
+    @media(max-width:900px) { .hero-screen { min-height:auto; padding:2rem 1.1rem; } .fn-bento { grid-template-columns:1fr; } .fn-panel { min-height:330px; } .info-strip { width:100%; min-width:0; } }
+    @media(max-width:700px) { .nav { padding:0 1.1rem; } .nav-links { display:none; } .info-strip { grid-template-columns:repeat(2,1fr); } .hero-name { font-size:clamp(2.7rem,14vw,5rem); } .actions-row { flex-direction:column; } }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="#home" class="nav-logo">aiCFO<span class="red">.</span></a><ul class="nav-links"><li><a class="nav-link" href="#desk">01 / Desk</a></li><li><button id="theme-toggle" class="nav-link theme-toggle" type="button" aria-label="Switch theme">☾</button></li></ul></nav>
+
+  <main>
+    <section class="hero-screen" id="home">
+      <div class="hero-grid">
+        <div class="hero-top">
+          <div>
+            <div class="section-label"><span class="num">[01]</span><span class="sep">/</span><span>aiCFO desk</span><span class="line"></span><span class="meta">automotive intelligence</span></div>
+            <h1 class="hero-name">Ask the<br>market<span class="red">.</span></h1>
+            <p class="hero-tagline">VAHAN evidence <span class="red">·</span> macro context <span class="red">·</span> executive signal</p>
+          </div>
+          <div class="info-strip" id="info-strip">
+            <div class="info-cell"><div class="info-key">Backend</div><div class="info-val"><span class="api-status live" id="api-dot"></span><span id="api-status-text">Ready</span></div></div>
+            <div class="info-cell"><div class="info-key">Source</div><div class="info-val">VAHAN</div></div>
+            <div class="info-cell"><div class="info-key">Agents</div><div class="info-val">2 parallel</div></div>
+            <div class="info-cell"><div class="info-key">Mode</div><div class="info-val">Decision</div></div>
+          </div>
+        </div>
+
+        <div class="fn-bento" id="desk">
+          <div class="fn-panel">
+            <div class="section-label small"><span class="num">01</span><span class="sep">/</span><span>Input</span><span class="line"></span><span class="meta">prompt</span></div>
+            <label class="info-key" for="query">Analysis request</label>
+            <textarea id="query" placeholder="Analyze TATA MOTORS LTD registrations from 2022 to 2026 alongside repo rates, inflation, commodities, and USDINR."></textarea>
+            <div class="actions-row"><button class="btn btn-primary" id="analyze" type="button">Analyze</button><button class="btn" id="clear" type="button">Clear</button></div>
+            <output class="panel-note" id="message"></output>
+          </div>
+
+          <div class="fn-panel">
+            <div class="section-label small"><span class="num">02</span><span class="sep">/</span><span>Automotive</span><span class="line"></span><span class="meta" id="auto-meta">idle</span></div>
+            <div class="loading-state" id="auto-loading"><div class="spinner"></div><div>Collecting VAHAN evidence</div></div>
+            <div class="empty-state" id="auto-empty"><div>// automotive report will appear here</div></div>
+            <div class="result-body" id="auto-result"></div>
+          </div>
+
+          <div class="fn-panel">
+            <div class="section-label small"><span class="num">03</span><span class="sep">/</span><span>Macro</span><span class="line"></span><span class="meta" id="macro-meta">idle</span></div>
+            <div class="loading-state" id="macro-loading"><div class="spinner"></div><div>Collecting macro evidence</div></div>
+            <div class="empty-state" id="macro-empty"><div>// macro report will appear here</div></div>
+            <div class="result-body" id="macro-result"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const $ = (selector) => document.querySelector(selector);
+    const escapeHtml = (value) => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
+    const list = (items) => items && items.length ? "<ul>" + items.map((item) => "<li>" + escapeHtml(item) + "</li>").join("") + "</ul>" : "<div class=\"result-empty\">No supported evidence</div>";
+    const render = (data, fields) => "<p class=\"summary\">" + escapeHtml(data?.summary || "No summary returned.") + "</p>" + fields.map(([label, key]) => "<div class=\"result-field\"><div class=\"info-key\">" + escapeHtml(label) + "</div>" + list(data?.[key]) + "</div>").join("");
+    const setLoading = (prefix, active) => { $("#" + prefix + "-loading").classList.toggle("active", active); $("#" + prefix + "-empty").style.display = active ? "none" : "flex"; $("#" + prefix + "-result").classList.toggle("active", false); $("#" + prefix + "-meta").textContent = active ? "running" : "idle"; };
+
+    $("#theme-toggle").addEventListener("click", () => { const dark = document.documentElement.dataset.theme === "dark"; document.documentElement.dataset.theme = dark ? "light" : "dark"; $("#theme-toggle").textContent = dark ? "☾" : "☀"; });
+    $("#clear").addEventListener("click", () => { $("#query").value = ""; $("#message").textContent = ""; ["auto", "macro"].forEach((prefix) => { setLoading(prefix, false); $("#" + prefix + "-result").innerHTML = ""; }); });
+    $("#analyze").addEventListener("click", async () => {
+      const query = $("#query").value.trim();
+      if (!query) { $("#message").textContent = "Enter an analysis request first."; return; }
+      $("#analyze").disabled = true; $("#message").textContent = "Both agents are gathering evidence..."; setLoading("auto", true); setLoading("macro", true);
+      try {
+        const response = await fetch("/api/analyze", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ query }) });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Analysis failed.");
+        const auto = $("#auto-result"); const macro = $("#macro-result");
+        auto.innerHTML = render(data.automotive_analysis, [["Key findings", "key_findings"], ["Trends", "trends"], ["Data points", "data_points"], ["Caveats", "caveats"]]);
+        macro.innerHTML = render(data.macro_analysis, [["Demand environment", "demand_environment"], ["Cost environment", "cost_environment"], ["Financing environment", "financing_environment"], ["Currency environment", "currency_environment"], ["Key metrics", "key_metrics"], ["Caveats", "caveats"]]);
+        ["auto", "macro"].forEach((prefix) => { $("#" + prefix + "-loading").classList.remove("active"); $("#" + prefix + "-empty").style.display = "none"; $("#" + prefix + "-result").classList.add("active"); $("#" + prefix + "-meta").textContent = "done"; });
+        $("#message").textContent = "Both agents returned a report.";
+      } catch (error) { $("#message").textContent = error.message; ["auto", "macro"].forEach((prefix) => { setLoading(prefix, false); $("#" + prefix + "-empty").innerHTML = "<div class=\"red\">// error</div><div>" + escapeHtml(error.message) + "</div>"; }); }
+      finally { $("#analyze").disabled = false; }
+    });
+  </script>
+</body>
+</html>
