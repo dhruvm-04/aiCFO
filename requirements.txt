@@ -1,0 +1,10 @@
+langchain
+langchain-groq
+langgraph
+flask
+pandas
+openpyxl
+pydantic
+python-dotenv
+requests
+yfinance
